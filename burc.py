@@ -1,6 +1,3 @@
-Tabii, istediğiniz burcun günlük burç yorumunu yapan bir Telegram botu için aşağıdaki kodları kullanabilirsiniz:
-
-```python
 import requests
 from bs4 import BeautifulSoup
 from telegram.ext import Updater, CommandHandler
