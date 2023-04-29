@@ -4,4 +4,4 @@ RUN pip install -r requests
 RUN pip install -r requirments.txt
 RUN mkdir /app/
 WORKDIR /app/
-CMD ["python3", "burc.py"
+CMD ["python3", "burc.py"]
