@@ -12,7 +12,7 @@ client = TelegramClient('burc_bot', api_id, api_hash).start(bot_token=bot_token)
 
 # Burç yorumlarını çeken fonksiyon
 def get_horoscope(burc):
-    response = requests.get(f'https://www.mynet.com/kadin/burclar-astroloji/{burc.lower()}-burcu-gunluk-yorumu')
+    response = requests.get(f'https://www.mynet.com/kadin/burclar-astroloji/{burc}-burcu-gunluk-yorumu')
     soup = BeautifulSoup(response.content, 'html.parser')
     horoscope_text = soup.find('p', class_='horoscope-text')
     if horoscope_text:
