@@ -15,7 +15,7 @@ Hea={
     } 
 # Burç yorumlarını çeken fonksiyon
 def get_horoscope(burc):
-    response = requests.get(f'https://www.astroloji.org/yildizfali/{burc}.asp', headers=Hea)
+    response = requests.get(f'https://www.mynet.com/kadin/burclar-astroloji/{burc.lower()}-burcu-gunluk-yorumu', headers=Hea)
     soup = BeautifulSoup(response.content, 'html.parser')
     horoscope_text = soup.find('p', class_='horoscope-text')
     if horoscope_text:
