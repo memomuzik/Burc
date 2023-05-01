@@ -25,7 +25,7 @@ burclar = {
 
 # Günlük burç yorumları
 def get_gunluk_burc_yorumu(burc):
-    url = f'https://www.hurriyet.com.tr/mahmure/astroloji/{burclar[burc]}-burcu'
+    url = f'https://www.milliyet.com.tr/pembenar/{burclar[burc]}-burcu-gunluk-yorum'
     r = requests.get(url)
     soup = BeautifulSoup(r.content, 'html.parser')
     yorum = soup.find('div', {'class': 'lead'}).text.strip()
