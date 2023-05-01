@@ -3,9 +3,10 @@ from telethon import events
 import requests
 from bs4 import BeautifulSoup
 
-api_id = YOUR_API_ID
-api_hash = 'YOUR_API_HASH'
-client = TelegramClient('session_name', api_id, api_hash)
+api_id = 25989627
+api_hash = 'dff2250c7620fef64cd17e4355432d82'
+bot_token = '6061198850:AAHAVRNvVRNOv81teRsLWwghhbx4FKXUWL8'
+client = TelegramClient('burcbot', api_id, api_hash).start(bot_token=bot_token)
 
 # Burçlar
 burclar = {
