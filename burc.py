@@ -29,10 +29,13 @@ async def start(event):
 
 @client.on(events.NewMessage(pattern='/burc'))
 async def horoscope(event):
+    # Komutun ardından gelen kelime sayısı 2'den az ise hata mesajı gönder
+    if len(event.text.split()) < 2:
+        await event.respond('Lütfen bir burç adı girin.')
+        return
     # Komutun ardından gelen ilk kelimeyi burç olarak alır
     burc = event.text.split()[1].lower()
     horoscope = get_horoscope(burc)
     await event.respond(horoscope)
-
 # Botu çalıştır
 client.run_until_disconnected()
