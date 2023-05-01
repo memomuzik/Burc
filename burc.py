@@ -12,7 +12,7 @@ client = TelegramClient('burcyorum', api_id, api_hash).start(bot_token=bot_token
 
 # Burç yorumu çeken fonksiyon
 def get_horoscope(burc):
-    url = 'https://www.elle.com.tr/astroloji/gunluk-burc-yorumlari'
+    url = 'https://www.elle.com.tr/astroloji/gunluk-burc-yorumlari/{burç}/haftalik'
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
     horoscopes = soup.find('div', {'class': 'section daily-horoscope'})
