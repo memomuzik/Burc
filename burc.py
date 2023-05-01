@@ -15,8 +15,12 @@ def get_horoscope(burc):
     url = f'https://www.hurriyet.com.tr/mahmure/astroloji/{burc}-burcu/'
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
-    horoscope = soup.find('p', class_='horoscope-text').text.strip()
-    return horoscope
+    horoscope_text = soup.find('p', class_='horoscope-text')
+    if horoscope_text:
+        horoscope = horoscope_text.text.strip()
+        return horoscope
+    else:
+        return f'{burc.capitalize()} burcu için yorum bulunamadı.'
 
 # Botun tepki vermesi için ayarlar
 @client.on(events.NewMessage(pattern='/start'))
