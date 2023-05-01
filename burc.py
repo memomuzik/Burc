@@ -51,5 +51,6 @@ async def horo(event):
         message += hor.text
         message += '\n\n'
     await event.respond('Here is your horoscope for today, {}:\n\n{}'.format(sign.capitalize(), message))
-
+ 
+  if __name__=='__main__':
     bot.run_until_disconnected()
