@@ -9,10 +9,13 @@ bot_token = '6061198850:AAHAVRNvVRNOv81teRsLWwghhbx4FKXUWL8'
 
 # Telegram istemcisini başlat
 client = TelegramClient('burc_bot', api_id, api_hash).start(bot_token=bot_token)
-
+Hea={
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.149 Safari/537.36",
+    "Pragma": "no-cache"
+    } 
 # Burç yorumlarını çeken fonksiyon
 def get_horoscope(burc):
-    url = f'https://www.astroloji.org/yildizfali/{burc}.asp'
+    url = (f'https://www.astroloji.org/yildizfali/{burc}.asp', headers=Hea)
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
     horoscope_text = soup.find('p', class_='horoscope-text')
