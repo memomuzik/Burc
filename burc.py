@@ -21,7 +21,7 @@ def get_horoscope(burc):
 # Telegram event handler
 @client.on(events.NewMessage(pattern='/burcyorumu'))
 async def handle(event):
-    message = event.message
+    message = event.message.message
     burc = message.split(' ')[1] # örn. /burcyorumu koc
     horoscope = get_horoscope(burc)
     await event.respond(f'{burc.capitalize()} burcu günlük yorumu:\n{horoscope}')
