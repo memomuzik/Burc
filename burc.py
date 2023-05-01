@@ -1,6 +1,5 @@
 from telethon.sync import TelegramClient
 from telethon import events
-import requests
 from bs4 import BeautifulSoup
 
 api_id = 25989627
