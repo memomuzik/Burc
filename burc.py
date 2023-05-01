@@ -56,9 +56,3 @@ async def main():
 if __name__ == '__main__':
     logger.info('Starting bot...')
     asyncio.run(main())
-```
-
-In this example code, you need to set up the environment variables `API_ID`, `API_HASH`, `BOT_TOKEN`, and `CHANNEL_USERNAME` with your own values. You can obtain the `API_ID` and `API_HASH` by creating a new application on the Telegram website. `BOT_TOKEN` can be obtained by creating a new bot through BotFather. `CHANNEL_USERNAME` is the username of the Telegram channel where you want to receive notification about the bot online status.
-
-Once you have set up the environment variables, you can run the script and interact with the bot by sending commands to it. For example, you can send `/start` to the bot to initialize it, and then send `/horoscope Aries` to get the daily horoscope for the Aries zodiac sign.
- 
