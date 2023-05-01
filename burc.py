@@ -16,7 +16,24 @@ def get_horoscope(burc):
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
     horoscopes = soup.find('div', {'class': 'section daily-horoscope'})
-    horoscope = horoscopes.find('div', {'class': burc}).text.strip()
+    burc_dict = {
+        'koç': 'aries',
+        'boğa': 'taurus',
+        'ikizler': 'gemini',
+        'yengeç': 'cancer',
+        'aslan': 'leo',
+        'başak': 'virgo',
+        'terazi': 'libra',
+        'akrep': 'scorpio',
+        'yay': 'sagittarius',
+        'oglak': 'capricorn',
+        'kova': 'aquarius',
+        'balık': 'pisces'
+    }
+    try:
+        horoscope = horoscopes.find('div', {'class': burc_dict[burc]}).text.strip()
+    except:
+        horoscope = 'Hata oluştu'
     return horoscope
 
 # Telegram event handler
