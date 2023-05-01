@@ -24,11 +24,15 @@ burclar = {
 }
 
 # Günlük burç yorumları
+
 def get_gunluk_burc_yorumu(burc):
-    url = f'https://www.milliyet.com.tr/pembenar/{burclar[burc]}-burcu-gunluk-yorum'
-    r = requests.get(url)
-    soup = BeautifulSoup(r.content, 'html.parser')
-    yorum = soup.find('div', {'class': 'lead'}).text.strip()
+    url = f'https://www.hurriyet.com.tr/gunluk-burc-yorumlari/{burc}-burcu/'
+    response = requests.get(url)
+    soup = BeautifulSoup(response.text, 'html.parser')
+    yorum_div = soup.find('div', {'class': 'lead'})
+    if yorum_div is None:
+        raise ValueError('Günlük burç yorumu bulunamadı.')
+    yorum = yorum_div.text.strip()
     return yorum
 
 # Komut işleme
