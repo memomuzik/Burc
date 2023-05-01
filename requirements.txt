@@ -1,3 +1,6 @@
 telethon
 requests
 bs4
+logging
+os
+asyncio
