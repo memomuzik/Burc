@@ -12,35 +12,17 @@ client = TelegramClient('burcyorum', api_id, api_hash).start(bot_token=bot_token
 
 # Burç yorumu çeken fonksiyon
 def get_horoscope(burc):
-    url = 'https://www.elle.com.tr/astroloji/gunluk-burc-yorumlari/{burç}/haftalik'
+    url = f'https://www.hurriyet.com.tr/mahmure/astroloji/{burc}-burcu/'
     response = requests.get(url)
     soup = BeautifulSoup(response.content, 'html.parser')
-    horoscopes = soup.find('div', {'class': 'section daily-horoscope'})
-    burc_dict = {
-        'koç': 'aries',
-        'boğa': 'taurus',
-        'ikizler': 'gemini',
-        'yengeç': 'cancer',
-        'aslan': 'leo',
-        'başak': 'virgo',
-        'terazi': 'libra',
-        'akrep': 'scorpio',
-        'yay': 'sagittarius',
-        'oglak': 'capricorn',
-        'kova': 'aquarius',
-        'balık': 'pisces'
-    }
-    try:
-        horoscope = horoscopes.find('div', {'class': burc_dict[burc]}).text.strip()
-    except:
-        horoscope = 'Hata oluştu'
+    horoscope = soup.find('div', {'class': 'horoscopetext'}).text.strip()
     return horoscope
 
 # Telegram event handler
 @client.on(events.NewMessage(pattern='/burcyorumu'))
-async def handler(event):
-    message = event.message.message
-    burc = message.split(' ')[1] # örn. /burcyorumu aslan
+async def handle(event):
+    message = event.message
+    burc = message.split(' ')[1] # örn. /burcyorumu koc
     horoscope = get_horoscope(burc)
     await event.respond(f'{burc.capitalize()} burcu günlük yorumu:\n{horoscope}')
 
