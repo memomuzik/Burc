@@ -13,7 +13,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(level
 logger = logging.getLogger(__name__)
 
 # Set up environment variables
-api_id = int(os.environ.get('25989627'))
+api_id = int(os.environ.get(25989627))
 api_hash = os.environ.get('dff2250c7620fef64cd17e4355432d82')
 bot_token = os.environ.get('6061198850:AAHAVRNvVRNOv81teRsLWwghhbx4FKXUWL8')
 channel_username = os.environ.get('burcyorumvefa')
