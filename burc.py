@@ -37,15 +37,15 @@ def get_gunluk_burc_yorumu(burc):
 
 # Komut işleme
 @client.on(events.NewMessage(pattern='/burc'))
-async def handle_message(event):
-    # Komut parametreleri alınır
-    param = event.raw_text.split(' ')[1].capitalize()
-    # Geçerli bir burç ise günlük yorumu alınır
-    if param in burclar.keys():
-        yorum = get_gunluk_burc_yorumu(param)
-        await event.respond(f'{param} burcu günlük yorumu:\n\n{yorum}')
-    else:
-        await event.respond('Geçerli bir burç giriniz.')
-
+async def burc(event):
+    try:
+        command, param = event.raw_text.split(' ')
+        if command.lower() == '/burc':
+            yorum = get_gunluk_burc_yorumu(param)
+            await event.respond(yorum)
+    except ValueError as e:
+        await event.respond(str(e))
+    except:
+        await event.respond('Bir hata oluştu.')
 client.start()
 client.run_until_disconnected()
