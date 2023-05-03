@@ -67,6 +67,11 @@ def get_horoscope(burc):
     soup = BeautifulSoup(page.content, 'html.parser')
     horoscope = soup.find(class_='detail-content-box')
     date = datetime.date.today().strftime('%d.%m.%Y')
-    return f'{date} tarihli {burc.capitalize()} burcu yorumu:\n\n{horoscope.get_text()}'
+    text = horoscope.get_text()
+    text = re.sub(r'\n+', '\n', text)  # birden fazla satır arasındaki boşlukları temizle
+    text = re.sub(r'^\s+|\s+?$', '', text)  # baştaki ve sondaki boşlukları temizle
+    text = re.sub(r'\[[^]]*\]', '', text)  # köşeli parantez içindeki metni temizle
+    text = re.sub(r'[^\w\s]', '', text)  # text olmayan karakterleri temizle
+    return f'{date} tarihli {burc.capitalize()} burcu yorumu:\n\n{text}'
 
 bot.run_until_disconnected()
