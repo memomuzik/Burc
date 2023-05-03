@@ -6,7 +6,7 @@ bot = telebot.TeleBot("6061198850:AAHAVRNvVRNOv81teRsLWwghhbx4FKXUWL8")
 
 # Burçlar ve bağlantıları
 astrology_links = {
-    "koç": "https://www.hurriyet.com.tr/astroloji/rezzan-kiraz/gunluk-burc-yorumlari/koc",
+    "koç": "https://www.mynet.com/kadin/burclar-astroloji/koc-burcu-gunluk-yorumu.html",
     "boğa": "https://www.hurriyet.com.tr/astroloji/rezzan-kiraz/gunluk-burc-yorumlari/boga",
     "ikizler": "https://www.hurriyet.com.tr/astroloji/rezzan-kiraz/gunluk-burc-yorumlari/ikizler",
     "yengeç": "https://www.hurriyet.com.tr/astroloji/rezzan-kiraz/gunluk-burc-yorumlari/yengec",
