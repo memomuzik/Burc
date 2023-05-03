@@ -1,1 +1,1 @@
-worker: python3 burc.py
+web: python3 burc.py
