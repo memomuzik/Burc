@@ -1,39 +1,23 @@
-
 import requests
 from bs4 import BeautifulSoup
+from telethon.sync import TelegramClient
 
-# Telegram bot için gerekli kütüphaneler
-import telegram
-from telegram.ext import Updater, CommandHandler
-
-# Telegram botunuzun token'ını girin
+# Telegram botu API anahtarları
+api_id = '25989627'
+api_hash = 'dff2250c7620fef64cd17e4355432d82'
 bot_token = '6061198850:AAHAVRNvVRNOv81teRsLWwghhbx4FKXUWL8'
+channel_username = 'burcyorumkanal'
 
-# Botunuzun işleyeceği komutu belirleyin
-def burc_yorumu(update, context):
-    # Kullanıcının gönderdiği burç adını alın
-    burc = context.args[0].lower()
-    
-    # Mynet Kadın web sitesindeki burç yorumlarını çekin
-    url = f'https://www.mynet.com/kadin/burclar-astroloji/{burc}-burcu-gunluk-yorumu.html'
-    response = requests.get(url)
-    soup = BeautifulSoup(response.content, 'html.parser')
-    yorumlar = soup.find_all('p', {'class': 'yorum'})
-    
-    # Kullanıcıya burç yorumunu gönderin
-    if len(yorumlar) > 0:
-        yorum = yorumlar[0].get_text()
-        context.bot.send_message(chat_id=update.effective_chat.id, text=f'{burc.capitalize()} burcu günlük yorumu:\n\n{yorum}')
-    else:
-        context.bot.send_message(chat_id=update.effective_chat.id, text='Hata: Bu burç için yorum bulunamadı.')
+# İnternet sitesinden metni alın ve işleyin
+url = 'https://www.mynet.com/kadin/burclar-astroloji/koc-burcu-gunluk-yorumu.html'
+response = requests.get(url)
+soup = BeautifulSoup(response.content, 'html.parser')
+text = soup.get_text()
 
-# Telegram botunuzu başlatın
-updater = Updater(token=bot_token, use_context=True)
-dispatcher = updater.dispatcher
+# Telethon ile Telegram botunu başlatın
+client = TelegramClient('session_name', api_id, api_hash).start(bot_token=bot_token)
 
-# Botunuzun işleyeceği komutu belirleyin
-burc_yorumu_handler = CommandHandler('burcyorumu', burc_yorumu)
-dispatcher.add_handler(burc_yorumu_handler)
+# Metni Telegram kanalına gönderin
+client.send_message(channel_username, text)
 
-# Botunuzu çalıştırın
-updater.start_polling()
+client.run_until_disconnected()
