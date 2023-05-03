@@ -1,60 +1,39 @@
-from selenium import webdriver
-import telebot
 
-# Telegram bot token'ınızı buraya girin
-bot = telebot.TeleBot("6061198850:AAHAVRNvVRNOv81teRsLWwghhbx4FKXUWL8")
+import requests
+from bs4 import BeautifulSoup
 
-# Burçlar ve bağlantıları
-astrology_links = {
-    "koç": "https://www.mynet.com/kadin/burclar-astroloji/koc-burcu-gunluk-yorumu.html",
-    "boğa": "https://www.hurriyet.com.tr/astroloji/rezzan-kiraz/gunluk-burc-yorumlari/boga",
-    "ikizler": "https://www.hurriyet.com.tr/astroloji/rezzan-kiraz/gunluk-burc-yorumlari/ikizler",
-    "yengeç": "https://www.hurriyet.com.tr/astroloji/rezzan-kiraz/gunluk-burc-yorumlari/yengec",
-    "aslan": "https://www.hurriyet.com.tr/astroloji/rezzan-kiraz/gunluk-burc-yorumlari/aslan",
-    "başak": "https://www.hurriyet.com.tr/astroloji/rezzan-kiraz/gunluk-burc-yorumlari/basak",
-    "terazi": "https://www.hurriyet.com.tr/astroloji/rezzan-kiraz/gunluk-burc-yorumlari/terazi",
-    "akrep": "https://www.hurriyet.com.tr/astroloji/rezzan-kiraz/gunluk-burc-yorumlari/akrep",
-    "yay": "https://www.hurriyet.com.tr/astroloji/rezzan-kiraz/gunluk-burc-yorumlari/yay",
-    "oğlak": "https://www.hurriyet.com.tr/mahmure/astroloji/oglak-burcu/",
-    "kova": "https://www.hurriyet.com.tr/astroloji/rezzan-kiraz/gunluk-burc-yorumlari/kova",
-    "balık": "https://www.hurriyet.com.tr/astroloji/rezzan-kiraz/gunluk-burc-yorumlari/balik"
-}
+# Telegram bot için gerekli kütüphaneler
+import telegram
+from telegram.ext import Updater, CommandHandler
 
-# Burç yorumlarını alma fonksiyonu
-def get_horoscope(burc):
-   try:
-        # Tarayıcı sürücüsünü başlatın
-        driver = webdriver.Chrome()
-        driver.get(astrology_links[burc])
+# Telegram botunuzun token'ını girin
+bot_token = '6061198850:AAHAVRNvVRNOv81teRsLWwghhbx4FKXUWL8'
 
-        # Burç yorumunu alın ve düzenleyin
-        horoscope = driver.find_element_by_class_name("horoscope-detail").text.strip()
-
-        # Tarayıcı sürücüsünü kapatın
-        driver.quit()
-
-        return horoscope
-   except:
-        return "Burç yorumu alınamadı."
-
-# /start komutu için işlev
-@bot.message_handler(commands=['start'])
-def send_welcome(message):
-    bot.reply_to(message, "Merhaba! Günlük burç yorumlarını almak için burcunuzu yazın.")
-
-# Burç isimlerine göre yanıt verme işlevi
-@bot.message_handler(func=lambda message: True)
-def send_horoscope(message):
-    burc = message.text.lower()
-
-    if burc in astrology_links.keys():
-        horoscope = get_horoscope(burc)
-        bot.reply_to(message, horoscope)
+# Botunuzun işleyeceği komutu belirleyin
+def burc_yorumu(update, context):
+    # Kullanıcının gönderdiği burç adını alın
+    burc = context.args[0].lower()
+    
+    # Mynet Kadın web sitesindeki burç yorumlarını çekin
+    url = f'https://www.mynet.com/kadin/burclar-astroloji/{burc}-burcu-gunluk-yorumu.html'
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, 'html.parser')
+    yorumlar = soup.find_all('p', {'class': 'yorum'})
+    
+    # Kullanıcıya burç yorumunu gönderin
+    if len(yorumlar) > 0:
+        yorum = yorumlar[0].get_text()
+        context.bot.send_message(chat_id=update.effective_chat.id, text=f'{burc.capitalize()} burcu günlük yorumu:\n\n{yorum}')
     else:
-        bot.reply_to(message, "Geçersiz burç adı. Lütfen tekrar deneyin.")
+        context.bot.send_message(chat_id=update.effective_chat.id, text='Hata: Bu burç için yorum bulunamadı.')
 
-# Botu çalıştırın
-bot.polling()
+# Telegram botunuzu başlatın
+updater = Updater(token=bot_token, use_context=True)
+dispatcher = updater.dispatcher
 
+# Botunuzun işleyeceği komutu belirleyin
+burc_yorumu_handler = CommandHandler('burcyorumu', burc_yorumu)
+dispatcher.add_handler(burc_yorumu_handler)
 
-# kodları kendi Telegram botunuzda çalıştırarak, kullanıcılardan aldığınız burç isimlerine göre, Hurriyet Astroloji sayfasından günlük burç yorumlarını alabilirsiniz. Ancak, bu kodu çalıştırmadan önce `TOKEN` yerine kendi Telegram bot token'ınızı girmeniz ve ayrıca `webdriver.Chrome()` yerine kullandığınız tarayıcının sürücüsüne göre değiştirmeniz gerekiyor.
+# Botunuzu çalıştırın
+updater.start_polling()
