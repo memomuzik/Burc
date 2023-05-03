@@ -15,7 +15,7 @@ astrology_links = {
     "terazi": "https://www.hurriyet.com.tr/astroloji/rezzan-kiraz/gunluk-burc-yorumlari/terazi",
     "akrep": "https://www.hurriyet.com.tr/astroloji/rezzan-kiraz/gunluk-burc-yorumlari/akrep",
     "yay": "https://www.hurriyet.com.tr/astroloji/rezzan-kiraz/gunluk-burc-yorumlari/yay",
-    "oğlak": "https://www.hurriyet.com.tr/astroloji/rezzan-kiraz/gunluk-burc-yorumlari/oglak",
+    "oğlak": "https://www.hurriyet.com.tr/mahmure/astroloji/oglak-burcu/",
     "kova": "https://www.hurriyet.com.tr/astroloji/rezzan-kiraz/gunluk-burc-yorumlari/kova",
     "balık": "https://www.hurriyet.com.tr/astroloji/rezzan-kiraz/gunluk-burc-yorumlari/balik"
 }
