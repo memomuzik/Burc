@@ -2,7 +2,7 @@ from selenium import webdriver
 import telebot
 
 # Telegram bot token'ınızı buraya girin
-bot = telebot.TeleBot("TOKEN")
+bot = telebot.TeleBot("6061198850:AAHAVRNvVRNOv81teRsLWwghhbx4FKXUWL8")
 
 # Burçlar ve bağlantıları
 astrology_links = {
