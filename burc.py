@@ -34,7 +34,7 @@ def get_horoscope(burc):
         driver.quit()
 
         return horoscope
-    except:
+   except:
         return "Burç yorumu alınamadı."
 
 # /start komutu için işlev
