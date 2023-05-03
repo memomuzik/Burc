@@ -23,3 +23,5 @@ ffmpeg-python
 bs4
 lxml
 youtube-video-scraping
+telegram
+telegram.ext
