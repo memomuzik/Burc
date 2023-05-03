@@ -2,3 +2,4 @@ telethon
 requests
 bs4
 beautifulsoup4
+selenium
