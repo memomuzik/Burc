@@ -62,7 +62,7 @@ async def balık(event):
     await event.respond('Burcunuz Balık ♓️\n\n' + get_horoscope('balık'))
 
 def get_horoscope(burc):
-    url = 'https://www.hurriyet.com.tr/mahmure/astroloji/' + burc + '-burcu'
+    url = 'https://www.gunlukburc.net/gunluk-burc-yorumlari/'+ burc + '.html'
     page = requests.get(url)
     soup = BeautifulSoup(page.content, 'html.parser')
     horoscope = soup.find(class_='detail-content-box')
