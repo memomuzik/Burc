@@ -1,3 +1,5 @@
+from telethon import TelegramClient, events
+import random
 @bot.on(events.NewMessage(chats=events.ChatType.GROUP))
 async def handle_new_message(event):
     if event.chat.title == 'your_group_name':
