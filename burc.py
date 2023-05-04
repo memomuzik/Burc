@@ -62,16 +62,11 @@ async def balık(event):
     await event.respond('Burcunuz Balık ♓️\n\n' + get_horoscope('balık'))
 
 def get_horoscope(burc):
-    url = 'https://burcun.net/' + burc + '-burcu.html'
+    url = 'https://www.mynet.com/kadin/burclar-astroloji/' + burc + '-burcu-gunluk-yorumu.html'
     page = requests.get(url)
     soup = BeautifulSoup(page.content, 'html.parser')
     horoscope = soup.find(class_='detail-content-box')
     date = datetime.date.today().strftime('%d.%m.%Y')
-    text = horoscope.get_text()
-    text = re.sub(r'\n+', '\n', text)  # birden fazla satır arasındaki boşlukları temizle
-    text = re.sub(r'^\s+|\s+?$', '', text)  # baştaki ve sondaki boşlukları temizle
-    text = re.sub(r'\[[^]]*\]', '', text)  # köşeli parantez içindeki metni temizle
-    text = re.sub(r'[^\w\s]', '', text)  # text olmayan karakterleri temizle
-    return f'{date} tarihli {burc.capitalize()} burcu yorumu:\n\n{text}'
+    return f'{date} tarihli {burc.capitalize()} burcu yorumu:\n\n{horoscope.get_text()}'
 
 bot.run_until_disconnected()
