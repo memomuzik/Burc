@@ -123,4 +123,141 @@ async def baslat(event):
         await event.respond('Oyun durduruldu.')
         bot.remove_event_handler(tahmin_al)
 
+kelimeler = ['python', 'telethon', 'bot', 'telegram']
+
+# Oyun puanlama sistemini yönetmek için bir sözlük
+puanlar = {}
+
+# Oyun durumunu takip etmek için bir sözlük
+oyun_durumu = {}
+
+# Bot, /adamasmaca komutunu dinler
+@bot.on(events.NewMessage(pattern='/adamasmaca'))
+async def oyun_baslat(event):
+    # Grup ID'sini al
+    chat_id = event.chat_id
+    # Kelime seç ve oyun sırasında kullanılacak sözlükleri ayarla
+    kelime = random.choice(kelimeler)
+    oyun_durumu[chat_id] = '_' * len(kelime)
+    puanlar[chat_id] = 0
+    # Oyunu başlatarak kelimeyi gönder
+    await event.respond(f'Başladı! Kelime: {oyun_durumu[chat_id]}')
+
+# Bot, /tahmin komutunu dinler
+@bot.on(events.NewMessage(pattern='/tahmin'))
+async def tahmin_et(event):
+    # Grup ID'sini al
+    chat_id = event.chat_id
+    # Tahmin edilen harfi al
+    tahmin_harf = event.message.text.split()[-1].lower()
+    # Tahmin edilen harf kelime içinde var mı diye kontrol et
+    if tahmin_harf in kelimeler:
+        # Tahmin edilen harf doğruysa oyun durumunu güncelle
+        for i in range(len(kelimeler)):
+            if kelimeler[i] == tahmin_harf:
+                oyun_durumu[chat_id] = oyun_durumu[chat_id][:i] + tahmin_harf + oyun_durumu[chat_id][i+1:]
+        # Puan ekle ve oyun durumunu gönder
+        puanlar[chat_id] += 1
+        await event.respond(f'Doğru! Kelime: {oyun_durumu[chat_id]}')
+    else:
+        # Tahmin edilen harf yanlışsa puan ekle ve adam asmaca şeklini çiz
+        puanlar[chat_id] -= 1
+        await event.respond(f'Yanlış! Kelime: {oyun_durumu[chat_id]}')
+        await event.respond('''
+
+            |-----
+            |
+            |
+            |
+            |
+            |
+            |
+            |
+            |
+            |-----
+            ''',
+
+                            '''
+            |-----
+            |    |
+            |    😯
+            |
+            |
+            |
+            |
+            |
+            |
+            |-----
+            ''',
+
+                            '''
+            |-----
+            |    |
+            |    😯
+            |    |
+            |
+            |
+            |
+            |
+            |
+            |-----
+            ''',
+
+                            '''
+            |-----
+            |    |
+            |    😯
+            |    |
+            |   / \
+            |
+            |
+            |
+            |
+            |-----
+            ''',
+ 
+                            '''
+            |-----
+            |    |
+            |    😯
+            |    |
+            |   / \
+            |    |
+            |
+            |
+            |
+            |-----
+            ''',
+ 
+                            '''
+            |-----
+            |    |
+            |    😯
+            |    |
+            |   / \
+            |    |
+            |   / \
+            |
+            | Adam öldü
+            |-----
+            ''')  
+# Bot, /puanlama komutunu dinler
+@bot.on(events.NewMessage(pattern='/puanlama'))
+async def puanlama(event):
+    # Grup ID'sini al
+    chat_id = event.chat_id
+    # Puanları gönder
+    await event.respond(f'Puanlar: {puanlar[chat_id]}')
+
+# Bot, /oyundançık komutunu dinler
+@bot.on(events.NewMessage(pattern='/oyundançık'))
+async def oyun_bitir(event):
+    # Grup ID'sini al
+    chat_id = event.chat_id
+    # Oyun durumunu ve puanları sıfırla
+    oyun_durumu[chat_id] = ''
+    puanlar[chat_id] = 0
+    # Oyunu bitir
+    await event.respond('Oyun bitti. Yeni bir oyun için /adamasmaca komutunu kullanın.')
+
 bot.run_until_disconnected()
