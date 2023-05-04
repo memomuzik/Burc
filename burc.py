@@ -79,8 +79,8 @@ def get_horoscope(burc):
 async def etiketle(event):
     chat = await event.get_chat()
     users = await bot.get_participants(chat) 
-    mention1 = random.choice(users).'@'username
-    mention2 = random.choice(users).'@'username
+    mention1 = random.choice(users).(f'[{event.sender.first_name}](tg://user?id={event.sender.id})')
+    mention2 = random.choice(users).(f'[{event.sender.first_name}](tg://user?id={event.sender.id})')
     await bot.send_message(chat, f"{mention1} ve {mention2}, artık arkadaşsınız.")
 
 bot.run_until_disconnected()
