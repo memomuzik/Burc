@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import datetime
 import random
-from telethon.errors import SessionPasswordNeededError
+
 api_id = '25989627'
 api_hash = 'dff2250c7620fef64cd17e4355432d82'
 bot_token = '6061198850:AAHAVRNvVRNOv81teRsLWwghhbx4FKXUWL8'
@@ -124,94 +124,5 @@ async def baslat(event):
         await event.respond('Oyun durduruldu.')
         bot.remove_event_handler(tahmin_al)
 
-async def play_hangman(chat_id):
-    word_list = ['python', 'telethon', 'bot', 'telegram', 'openai']
-    word = random.choice(word_list)
-    game = Hangman(chat_id, word)
-    await game.start()
 
-await play_hangman(CHAT_ID)
-
-class Hangman:
-    def init(self, chat_id, word):
-        self.chat_id = chat_id
-        self.word = word.lower()
-        self.guesses = set()
-        self.wrong_guesses = 0
-
-    async def start(self):
-        await client.send_message(self.chat_id, 'Adam asmaca oyununa hoş geldiniz!')
-        await self.show_guesses()
-        await self.play()
-
-    async def play(self):
-        while self.wrong_guesses < 6:
-            guess = await self.get_guess()
-            if guess in self.word:
-                self.guesses.add(guess)
-                if self.is_won():
-                    await self.end('Kazandınız!')
-                    return
-            else:
-                self.wrong_guesses += 1
-                if self.is_lost():
-                    await self.end('Kaybettiniz! Kelime "{}" idi.'.format(self.word.upper()))
-                    return
-            await self.show_guesses()
-
-    async def get_guess(self):
-        message = await client.send_message(self.chat_id, 'Tahmin etmek istediğiniz harfi veya kelimeyi girin:')
-        guess = (await client.get_message(message.to_id, message.id)).message
-        if len(guess) == 1:
-            return guess.lower()
-        else:
-            return guess.lower().strip()
-
-    async def show_guesses(self):
-        masked_word = ''
-        for letter in self.word:
-            if letter in self.guesses:
-                masked_word += letter
-            else:
-                masked_word += '_'
-        await client.send_message(self.chat_id, masked_word)
-        await self.show_hangman()
-
-    async def show_hangman(self):
-        hangman = [
-            ' _____     ',
-            '|         |    ',
-            '|         {}    ',
-            '|        {}{}{} ',
-            '|        {} {}  ',
-            '|              ',
-            '|              ',
-        ]
-        if self.wrong_guesses == 0:
-            await client.send_message(self.chat_id, '\n'.join(hangman).format('', '', '', '', ''))
-        elif self.wrong_guesses == 1:
-            await client.send_message(self.chat_id, '\n'.join(hangman).format('O', '', '', '', ''))
-        elif self.wrong_guesses == 2:
-            await client.send_message(self.chat_id, '\n'.join(hangman).format('O', '', '', '', '|'))
-        elif self.wrong_guesses == 3:
-            await client.send_message(self.chat_id, '\n'.join(hangman).format('O', '', '', '', '|\\'))
-        elif self.wrong_guesses == 4:
-            await client.send_message(self.chat_id, '\n'.join(hangman).format('O', '', '', '', '/|\\'))
-        elif self.wrong_guesses == 5:
-            await client.send_message(self.chat_id, '\n'.join(hangman).format('O', '', '', '', '/|\\'))
-        else:
-            await client.send_message(self.chat_id, '\n'.join(hangman).format('O', '/', '|', '\\', '/ \\' ))
-
-    def is_won(self):
-        for letter in self.word:
-            if letter not in self.guesses:
-                return False
-        return True
-
-
-    def is_lost(self):
-        return self.wrong_guesses == 6
-
-    async def end(self, message):
-        await client.send_message(self.chat_id, message)
 bot.run_until_disconnected()
