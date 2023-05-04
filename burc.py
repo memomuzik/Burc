@@ -74,15 +74,13 @@ def get_horoscope(burc):
     return f'{date} tarihli {burc.capitalize()} burcu yorumu:\n\n{selected_text}'
    # return f'{date} tarihli {burc.capitalize()} burcu yorumu:\n\n{horoscope.get_text()}'
 
-@bot.on(events.NewMessage(pattern='/ask'))
-async def handle_new_message(event):
-    message = event.message.message
-    if message.startswith('!arkadas'):
-        chat = await bot.get_entity(event.chat_id)
-        users = await bot.get_participants(chat)
-        random_users = random.sample(users, 2)
-        for user in random_users:
-            await bot.send_message(chat, f'@{user.username} artık arkadaşınız!')
 
+@bot.on(events.NewMessage(pattern="/etiketle"))
+async def etiketle(event):
+    chat = await event.get_chat()
+    users = await bot.get_participants(chat)
+    mention1 = random.choice(users).mention
+    mention2 = random.choice(users).mention
+    await bot.send_message(chat, f"{mention1} ve {mention2}, artık arkadaşsınız.")
 
 bot.run_until_disconnected()
