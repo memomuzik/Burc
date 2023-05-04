@@ -69,7 +69,7 @@ def get_horoscope(burc):
     date = datetime.date.today().strftime('%d.%m.%Y')
     horoscope_text = horoscope.get_text()
     message_lines = horoscope_text.split('\n')
-    selected_lines = message_lines[15:25]
+    selected_lines = message_lines[30:60]
     selected_text = '\n'.join(selected_lines)
     return f'{date} tarihli {burc.capitalize()} burcu yorumu:\n\n{selected_text}'
    # return f'{date} tarihli {burc.capitalize()} burcu yorumu:\n\n{horoscope.get_text()}'
