@@ -11,31 +11,31 @@ bot = TelegramClient('bot', api_id, api_hash).start(bot_token=bot_token)
 
 @bot.on(events.NewMessage(pattern='/start'))
 async def start(event):
-    await event.respond('Merhaba, burç yorumlarına hoş geldiniz! Lütfen burcunuzu seçin: \n/Koc ♈️\n/Boga ♉️\n/ikizler ♊️\n/Yengec ♋️\n/Aslan ♌️\n/Basak ♍️\n/Terazi ♎️\n/Akrep ♏️\nlYay ♐️\n/Oglak ♑️\n/Kova ♒️\n/Balik ♓️\n\n\nAyrıca aşk okunu kullanmak isterseniz /ask komutunu kullanabilirsiniz')
+    await event.respond('Merhaba, burç yorumlarına hoş geldiniz! Lütfen burcunuzu seçin: \n/Koc ♈️\n/Boga ♉️\n/ikizler ♊️\n/Yengec ♋️\n/Aslan ♌️\n/Basak ♍️\n/Terazi ♎️\n/Akrep ♏️\nlYay ♐️\n/Oglak ♑️\n/Kova ♒️\n/Balik ♓️\n\n\nAyrıca aşk okunu kullanmak isterseniz /ask komutunu kullanabilirsiniz🏹💘')
 
-@bot.on(events.NewMessage(pattern='/koç'))
-async def koç(event):
-    await event.respond('Burcunuz Koç ♈️\n\n' + get_horoscope('koç'))
+@bot.on(events.NewMessage(pattern='/koc'))
+async def koc(event):
+    await event.respond('Burcunuz Koç ♈️\n\n' + get_horoscope('koc'))
 
-@bot.on(events.NewMessage(pattern='/boğa'))
-async def boğa(event):
-    await event.respond('Burcunuz Boğa ♉️\n\n' + get_horoscope('boğa'))
+@bot.on(events.NewMessage(pattern='/boga'))
+async def boga(event):
+    await event.respond('Burcunuz Boğa ♉️\n\n' + get_horoscope('boga'))
 
 @bot.on(events.NewMessage(pattern='/ikizler'))
 async def ikizler(event):
     await event.respond('Burcunuz İkizler ♊️\n\n' + get_horoscope('ikizler'))
 
-@bot.on(events.NewMessage(pattern='/yengeç'))
-async def yengeç(event):
-    await event.respond('Burcunuz Yengeç ♋️\n\n' + get_horoscope('yengeç'))
+@bot.on(events.NewMessage(pattern='/yengec'))
+async def yengec(event):
+    await event.respond('Burcunuz Yengeç ♋️\n\n' + get_horoscope('yengec'))
 
 @bot.on(events.NewMessage(pattern='/aslan'))
 async def aslan(event):
     await event.respond('Burcunuz Aslan ♌️\n\n' + get_horoscope('aslan'))
 
-@bot.on(events.NewMessage(pattern='/başak'))
-async def başak(event):
-    await event.respond('Burcunuz Başak ♍️\n\n' + get_horoscope('başak'))
+@bot.on(events.NewMessage(pattern='/basak'))
+async def basak(event):
+    await event.respond('Burcunuz Başak ♍️\n\n' + get_horoscope('basak'))
 
 @bot.on(events.NewMessage(pattern='/terazi'))
 async def terazi(event):
@@ -49,17 +49,17 @@ async def akrep(event):
 async def yay(event):
     await event.respond('Burcunuz Yay ♐️\n\n' + get_horoscope('yay'))
 
-@bot.on(events.NewMessage(pattern='/oğlak'))
-async def oğlak(event):
-    await event.respond('Burcunuz Oğlak ♑️\n\n' + get_horoscope('oğlak'))
+@bot.on(events.NewMessage(pattern='/oglak'))
+async def oglak(event):
+    await event.respond('Burcunuz Oğlak ♑️\n\n' + get_horoscope('oglak'))
 
 @bot.on(events.NewMessage(pattern='/kova'))
 async def kova(event):
     await event.respond('Burcunuz Kova ♒️\n\n' + get_horoscope('kova'))
 
-@bot.on(events.NewMessage(pattern='/balık'))
-async def balık(event):
-    await event.respond('Burcunuz Balık ♓️\n\n' + get_horoscope('balık'))
+@bot.on(events.NewMessage(pattern='/balik'))
+async def balik(event):
+    await event.respond('Burcunuz Balık ♓️\n\n' + get_horoscope('balik'))
 
 def get_horoscope(burc):
     url = 'https://www.mynet.com/kadin/burclar-astroloji/' + burc + '-burcu-gunluk-yorumu.html'
@@ -75,12 +75,12 @@ def get_horoscope(burc):
    # return f'{date} tarihli {burc.capitalize()} burcu yorumu:\n\n{horoscope.get_text()}'
 
 
-@bot.on(events.NewMessage(pattern="/etiketle"))
-async def etiketle(event):
+@bot.on(events.NewMessage(pattern="/ask"))
+async def ask(event):
     chat = await event.get_chat()
     users = await bot.get_participants(chat) 
     mention1 = random.choice(users).username
     mention2 = random.choice(users).username
-    await bot.send_message(chat, f"@{mention1} ve @{mention2}, artık arkadaşsınız.")
+    await bot.send_message(chat, f"Ve işte beklenen oldu😯😯😯\n\n@{mention1} ❤️ @{mention2}\n\naşkın oku kalplerine saplandı.🏹💘")
 
 bot.run_until_disconnected()
