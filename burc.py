@@ -11,7 +11,7 @@ bot = TelegramClient('bot', api_id, api_hash).start(bot_token=bot_token)
 
 @bot.on(events.NewMessage(pattern='/start'))
 async def start(event):
-    await event.respond('Merhaba, burç yorumlarına hoş geldiniz! Lütfen burcunuzu seçin: \nKoç ♈️\nBoğa ♉️\nİkizler ♊️\nYengeç ♋️\nAslan ♌️\nBaşak ♍️\nTerazi ♎️\nAkrep ♏️\nYay ♐️\nOğlak ♑️\nKova ♒️\nBalık ♓️')
+    await event.respond('Merhaba, burç yorumlarına hoş geldiniz! Lütfen burcunuzu seçin: \n/Koc ♈️\n/Boga ♉️\n/ikizler ♊️\n/Yengec ♋️\n/Aslan ♌️\n/Basak ♍️\n/Terazi ♎️\n/Akrep ♏️\nlYay ♐️\n/Oglak ♑️\n/Kova ♒️\n/Balik ♓️\n\n\nAyrıca aşk okunu kullanmak isterseniz /ask komutunu kullanabilirsiniz')
 
 @bot.on(events.NewMessage(pattern='/koç'))
 async def koç(event):
