@@ -2,7 +2,7 @@ from telethon import TelegramClient, events
 import requests
 from bs4 import BeautifulSoup
 import datetime
-import erosbot
+import random
 api_id = '25989627'
 api_hash = 'dff2250c7620fef64cd17e4355432d82'
 bot_token = '6061198850:AAHAVRNvVRNOv81teRsLWwghhbx4FKXUWL8'
@@ -73,6 +73,17 @@ def get_horoscope(burc):
     selected_text = '\n'.join(selected_lines)
     return f'{date} tarihli {burc.capitalize()} burcu yorumu:\n\n{selected_text}'
    # return f'{date} tarihli {burc.capitalize()} burcu yorumu:\n\n{horoscope.get_text()}'
+@bot.on(events.NewMessage(chats=events.ChatType.GROUP))
+async def handle_new_message(event):
+    if event.chat.title == 'your_group_name':
+        message = event.message.message
+        if message.startswith('/arkadas'):
+            chat = await bot.get_entity(event.chat_id)
+            users = await bot.get_participants(chat)
+            random_users = random.sample(users, 2)
+            for user in random_users:
+                await bot.send_message(chat, f'@{user.username} artık arkadaşınız!')
+
 
 
 bot.run_until_disconnected()
