@@ -164,7 +164,7 @@ async def start_game(event):
             pass
 
     # Tahminleri dinleme işlemi başlatma
-    tahmin_dinleyici = client.on(events.NewMessage(from_users=event.sender_id))(tahmin_dinleme_islemi)
+    tahmin_dinleyici = bot.on(events.NewMessage(from_users=event.sender_id))(tahmin_dinleme_islemi)
 
 # Oyunu başlatma komutunu dinleme
 @bot.on(events.NewMessage(pattern='/adamasmaca'))
