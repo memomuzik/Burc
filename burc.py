@@ -83,4 +83,44 @@ async def ask(event):
     mention2 = random.choice(users).username
     await bot.send_message(chat, f"Ve işte beklenen oldu😯😯😯\n\n@{mention1} ❤️ @{mention2}\n\naşkın oku kalplerine saplandı.🏹💘")
 
+
+@bot.on(events.NewMessage(pattern='/sayi'))
+async def baslat(event):
+    baslatan = await event.get_sender()
+    eti = f"[{baslatan.first_name}](tg://user?id={baslatan.id})" # Kişiyi Etikete Dönüştürelim
+    await event.respond(f'Sanırım Kendine Güveniyorsun {eti}\n\n● 1 İle 1000 Arasında Bir Sayı Tuttum Lütfen Tahminilerini Yaz\nBen Seni Yönlendireceğim!')
+
+
+    tutulan = random.randint(1, 1000)
+    sayac = 0
+
+
+# Tahminleri Alalım
+    @bot.on(events.NewMessage)
+    async def tahmin_al(event):
+        username = f'[{event.sender.first_name}](tg://user?id={event.sender.id})'
+        nonlocal sayac # Sayacımızı Sayı İçeren Mesajları Saymak İçin Başlatalım
+        try:
+            tahmin = int(event.message.text)
+        except ValueError: # Oyun Aktifken Gelen Mesajların Sayı Olmadığında Duralım Ve Sessiz Bir Şekilde Hata Verelim Ama Hatayı Dışarıya Yansıtmayalım
+            return # Gelen Mesaj Sayı İçeriyor ise Devam Edelim
+
+        sayac += 1 # Tahmin Sayacı Her Sayı İçeren Mesaj Geldiğinde Bir Tahmin Sayısı Ekleyelim
+
+        if tahmin == tutulan: # Gelen Mesaj Tutulan Sayı İle Eşleşiyorsa Tebrik Edelim
+            await event.respond(f'{username} 💐 Tebrikler!\n\n➥ {tahmin} Sayısını Bildiniz\n\n● Sayıyı Bilmek İçin {sayac} Kere Uğraştınız!')
+            bot.remove_event_handler(tahmin_al)
+     
+         
+        elif tahmin < tutulan: # Mesajdaki Sayı Seçilenden Küçük İse Uyarı Verelim
+            await event.respond(f'{username} Daha Yüksek Bir Sayı Söyle ⬆️')
+        else: # Zıt Tahmin
+            await event.respond(f'{username} Daha Düşük Bir Sayı Söyle ⬇️') # Tam Tersini Yapalım
+
+
+    @bot.on(events.NewMessage(pattern='/tahminbitir'))
+    async def stop_game(event):
+        await event.respond('Oyun durduruldu.')
+        bot.remove_event_handler(tahmin_al)
+
 bot.run_until_disconnected()
