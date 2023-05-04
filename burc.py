@@ -3,6 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import datetime
 import random
+from telethon.errors import SessionPasswordNeededError
 api_id = '25989627'
 api_hash = 'dff2250c7620fef64cd17e4355432d82'
 bot_token = '6061198850:AAHAVRNvVRNOv81teRsLWwghhbx4FKXUWL8'
@@ -123,52 +124,94 @@ async def baslat(event):
         await event.respond('Oyun durduruldu.')
         bot.remove_event_handler(tahmin_al)
 
-kelimeler = ['python', 'telefon', 'kitap', 'masa', 'kalem']
-maksimum_hak = 6
+async def play_hangman(chat_id):
+    word_list = ['python', 'telethon', 'bot', 'telegram', 'openai']
+    word = random.choice(word_list)
+    game = Hangman(chat_id, word)
+    await game.start()
 
-# Oyun başlatma işlevi
-async def start_game(event):
-    kelime = random.choice(kelimeler)
-    tahminler = set()
-    hak = maksimum_hak
-    mesaj = f'Tahmin edilecek kelime: {" ".join("_" for harf in kelime)}\nKalan hak: {hak}'
+await play_hangman(CHAT_ID)
 
-    # Oyunu başlatan mesajı gönderme
-    await event.respond(mesaj)
+class Hangman:
+    def init(self, chat_id, word):
+        self.chat_id = chat_id
+        self.word = word.lower()
+        self.guesses = set()
+        self.wrong_guesses = 0
 
-    # Tahmin işlevi
-    async def tahmin_islemi(harf):
-        nonlocal hak, tahminler
-        if harf in tahminler:
-            return await event.respond(f'"{harf}" harfini daha önce tahmin ettiniz.')
-        tahminler.add(harf)
-        if harf not in kelime:
-            hak -= 1
-            if hak == 0:
-                await event.respond(f'Üzgünüm, kaybettiniz. Doğru kelime "{kelime}" idi.')
-                return False
-            await event.respond(f'"{harf}" harfi yanlış. Kalan hak: {hak}')
+    async def start(self):
+        await client.send_message(self.chat_id, 'Adam asmaca oyununa hoş geldiniz!')
+        await self.show_guesses()
+        await self.play()
+
+    async def play(self):
+        while self.wrong_guesses < 6:
+            guess = await self.get_guess()
+            if guess in self.word:
+                self.guesses.add(guess)
+                if self.is_won():
+                    await self.end('Kazandınız!')
+                    return
+            else:
+                self.wrong_guesses += 1
+                if self.is_lost():
+                    await self.end('Kaybettiniz! Kelime "{}" idi.'.format(self.word.upper()))
+                    return
+            await self.show_guesses()
+
+    async def get_guess(self):
+        message = await client.send_message(self.chat_id, 'Tahmin etmek istediğiniz harfi veya kelimeyi girin:')
+        guess = (await client.get_message(message.to_id, message.id)).message
+        if len(guess) == 1:
+            return guess.lower()
         else:
-            if set(kelime) == tahminler:
-                await event.respond(f'Tebrikler, kazandınız! Doğru kelime "{kelime}" idi.')
+            return guess.lower().strip()
+
+    async def show_guesses(self):
+        masked_word = ''
+        for letter in self.word:
+            if letter in self.guesses:
+                masked_word += letter
+            else:
+                masked_word += '_'
+        await client.send_message(self.chat_id, masked_word)
+        await self.show_hangman()
+
+    async def show_hangman(self):
+        hangman = [
+            ' _____     ',
+            '|         |    ',
+            '|         {}    ',
+            '|        {}{}{} ',
+            '|        {} {}  ',
+            '|              ',
+            '|              ',
+        ]
+        if self.wrong_guesses == 0:
+            await client.send_message(self.chat_id, '\n'.join(hangman).format('', '', '', '', ''))
+        elif self.wrong_guesses == 1:
+            await client.send_message(self.chat_id, '\n'.join(hangman).format('O', '', '', '', ''))
+        elif self.wrong_guesses == 2:
+            await client.send_message(self.chat_id, '\n'.join(hangman).format('O', '', '', '', '|'))
+        elif self.wrong_guesses == 3:
+            await client.send_message(self.chat_id, '\n'.join(hangman).format('O', '', '', '', '|\\'))
+        elif self.wrong_guesses == 4:
+            await client.send_message(self.chat_id, '\n'.join(hangman).format('O', '', '', '', '/|\\'))
+        elif self.wrong_guesses == 5:
+            await client.send_message(self.chat_id, '\n'.join(hangman).format('O', '', '', '', '/|\\'))
+        else:
+            await client.send_message(self.chat_id, '\n'.join(hangman).format('O', '/', '|', '\\', '/ \\' ))
+
+    def is_won(self):
+        for letter in self.word:
+            if letter not in self.guesses:
                 return False
-            await event.respond(f'"{harf}" harfi doğru.')
+        return True
 
-    # Tahminleri dinleme işlevi
-    async def tahmin_dinleme_islemi(event):
-        try:
-            mesaj = event.message.message
-            if len(mesaj) == 1 and mesaj.isalpha():
-                await tahmin_islemi(mesaj.lower())
-        except AttributeError:
-            pass
 
-    # Tahminleri dinleme işlemi başlatma
-    tahmin_dinleyici = bot.on(events.NewMessage(from_users=event.sender_id))(tahmin_dinleme_islemi)
+    def is_lost(self):
+        return self.wrong_guesses == 6
 
-# Oyunu başlatma komutunu dinleme
-@bot.on(events.NewMessage(pattern='/adamasmaca'))
-async def oyun_baslatma_islemi(event):
-    await start_game(event)
-
+    async def end(self, message):
+        await client.send_message(self.chat_id, message)
 bot.run_until_disconnected()
