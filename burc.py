@@ -69,4 +69,12 @@ def get_horoscope(burc):
     date = datetime.date.today().strftime('%d.%m.%Y')
     return f'{date} tarihli {burc.capitalize()} burcu yorumu:\n\n{horoscope.get_text()}'
 
+message_lines = message.split('\n')
+new_message = '\n'.join(message_lines[10:])
+
+# Yeni mesajı göndermek için
+@bot.on(events.NewMessage())
+async def my_event_handler(event):
+    await event.respond(new_message)
+
 bot.run_until_disconnected()
