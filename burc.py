@@ -14,7 +14,7 @@ bot = TelegramClient('bot', api_id, api_hash).start(bot_token=bot_token)
 
 @bot.on(events.NewMessage(pattern='/start'))
 async def start(event):
-    await event.respond('Merhaba, burç yorumlarına hoş geldiniz! Lütfen burcunuzu başına / koyarak yazın ve yorumunuz gelsin\n\nNot: Yoğunluk nedeniyle ve verilen kota nedeniyle burcunuz görüntülenemeyebilir bir süre sonra tekrar deneyiniz veya yardım için: @yoodelidegilim \n\n\nAyrıca aşk okunu kullanmak isterseniz /ask komutunu kullanabilirsiniz🏹💘')
+    await event.respond('👋Merhaba ben Telegramın eğlence botuyum\n\n işte sana yapabildiğim herşeyi tek tek yazıyorum🤭\n\nBurç yorumu için yorumunu almak istediğiniz burcu başına / koyarak yazın örnek: /koc \n\nEros aşkın oku /ask komutu ile grubundaki iki kişiyi birbirine shipler🏹👩‍❤️‍👨\n\nSayi tahmin oyunu oynamak için /sayi oyunu durdurmak için /tahminbitir komutlarını kullanabilirsiniz🔢\n\ndoğruluk ve cesaretlilik sorusu alabilirsiniz\n komutlar: \n/d = doğruluk sorusu sorar.\/c = Cesaret sorusu sorar.\n\n eğer bir sorun oluşursa 👮‍♀ @cengonuzz veya 👨‍💻 @yoodelidegilim kişileri ile iletişime geçebilirsiniz📞\n\nDiğer botlarımız için kanalımızı ziyaret edebilirsiniz ⚙ @vefabots')
 
 @bot.on(events.NewMessage(pattern='/koc'))
 async def koc(event):
