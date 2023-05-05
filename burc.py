@@ -3,6 +3,9 @@ import requests
 from bs4 import BeautifulSoup
 import datetime
 import random
+from telethon.tl.functions.messages import SendMessageRequest
+from telethon.tl.types import InputPeerChat
+
 api_id = '25989627'
 api_hash = 'dff2250c7620fef64cd17e4355432d82'
 bot_token = '6061198850:AAHAVRNvVRNOv81teRsLWwghhbx4FKXUWL8'
@@ -123,5 +126,34 @@ async def baslat(event):
         await event.respond('Oyun durduruldu.')
         bot.remove_event_handler(tahmin_al)
 
+# Doğruluk soruları
+dogruluk_sorulari = ['En utanç verici anın nedir?', 
+                     'En sevdiğin yemeği kim yapar?', 
+                     'Hiç babanın seni koruduğunu hissettin mi?', 
+                     'Bir marka için hayatın boyunca en pahalı parayı ne kadara harcadın?', 
+                     'Bir kişi hakkında ne öğrendiğin ve söylemediğin en kirli sır nedir?']
+
+# Cesaretlilik görevleri
+cesaretlilik_gorevleri = ['5 dakika boyunca ağlarsın.',
+                         'Kapıdan dışarıya çıkıp, ardından hızlıca geri dön.', 
+                         'Karşındaki kişiye sarıl ve seni sevdiğini söyle.', 
+                         'Daima yapmak istediğin bir şeyi yap.', 
+                         'Önünde diz çök ve karşındaki kişinin ayakkabılarını bağla.']
+
+# Grup mesajlarına cevap olarak doğruluk soruları gönderen işlev
+@bot.on(events.NewMessage())
+async def send_dogruluk_sorusu(event):
+    if event.text == '/dogruluk':
+        chat = await bot.get_input_entity(event.chat_id)
+        dogruluk_sorusu = random.choice(dogruluk_sorulari)
+        await bot(SendMessageRequest(chat, message=dogruluk_sorusu))
+
+# Grup mesajlarına cevap olarak cesaretlilik görevleri gönderen işlev
+@bot.on(events.NewMessage())
+async def send_cesaretlilik_gorevi(event):
+    if event.text == '/cesaretlilik':
+        chat = await bot.get_input_entity(event.chat_id)
+        cesaretlilik_gorevi = random.choice(cesaretlilik_gorevleri)
+        await bot(SendMessageRequest(chat, message=cesaretlilik_gorevi))
 
 bot.run_until_disconnected()
