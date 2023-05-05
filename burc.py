@@ -3,7 +3,7 @@ import requests
 from bs4 import BeautifulSoup
 import datetime
 import random
-import ask
+import eros
 api_id = '25989627'
 api_hash = 'dff2250c7620fef64cd17e4355432d82'
 bot_token = '6061198850:AAHAVRNvVRNOv81teRsLWwghhbx4FKXUWL8'
