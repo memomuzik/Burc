@@ -6,9 +6,9 @@ import random
 from telethon.tl.functions.messages import SendMessageRequest
 from telethon.tl.types import InputPeerChat
 
-api_id = '24915972'
-api_hash = '1ce404b772b69f4ff41de242f4418173'
-bot_token = '6229781524:AAEilZbiUuUC_hAiHN9Gifw73E9nVBcog60'
+api_id = '25989627'
+api_hash = 'dff2250c7620fef64cd17e4355432d82'
+bot_token = '6268895459:AAETaTzqgNM9o6SAyd9SB78IYLgZioaYRJU'
 
 bot = TelegramClient('bot', api_id, api_hash).start(bot_token=bot_token)
 
